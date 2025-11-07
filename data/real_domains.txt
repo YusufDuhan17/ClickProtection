@@ -1,0 +1,284 @@
+# Türkiye'deki Bankalar
+garantibbva.com
+isbank.com.tr
+akbank.com
+yapikredi.com.tr
+ziraatbank.com.tr
+halkbank.com.tr
+vakifbank.com.tr
+qnb.com.tr
+denizbank.com
+ingbank.com.tr
+teb.com.tr
+fibabanka.com.tr
+alternatifbank.com.tr
+sekeryatirim.com.tr
+burgan.com.tr
+turkishbank.com.tr
+turkishbank.com
+hsbc.com.tr
+citibank.com.tr
+standardchartered.com.tr
+
+# Uluslararası Bankalar ve Finansal Servisler
+paypal.com
+paypal.com.tr
+mastercard.com
+visa.com
+americanexpress.com
+westernunion.com
+moneygram.com
+
+# E-Ticaret ve Alışveriş Siteleri
+trendyol.com
+hepsiburada.com
+gittigidiyor.com
+n11.com
+amazon.com.tr
+amazon.com
+amazon.de
+amazon.co.uk
+amazon.fr
+amazon.it
+amazon.es
+aliexpress.com
+ebay.com
+ebay.com.tr
+
+# Araç Satın Alma ve Kiralama Siteleri
+sahibinden.com
+arabam.com
+otomobil.com
+ikinciyeni.com
+tiktak.com
+garenta.com.tr
+enterprise.com.tr
+avis.com.tr
+budget.com.tr
+europcar.com.tr
+sixt.com.tr
+rentgo.com.tr
+rentacar.com.tr
+
+# Teknoloji ve Yazılım Şirketleri
+microsoft.com
+google.com
+google.com.tr
+apple.com
+apple.com.tr
+samsung.com
+samsung.com.tr
+huawei.com
+xiaomi.com
+lenovo.com
+hp.com
+dell.com
+asus.com
+acer.com
+sony.com
+lg.com
+
+# Sosyal Medya ve İletişim
+facebook.com
+instagram.com
+twitter.com
+x.com
+linkedin.com
+youtube.com
+tiktok.com
+whatsapp.com
+telegram.org
+snapchat.com
+pinterest.com
+reddit.com
+
+# Eğitim ve İçerik
+meb.gov.tr
+yok.gov.tr
+ogm.meb.gov.tr
+eba.gov.tr
+udemy.com
+udemy.com.tr
+coursera.org
+khanacademy.org
+edx.org
+
+# Devlet ve Resmi Kurumlar
+tcmb.gov.tr
+sgk.gov.tr
+gib.gov.tr
+nvi.gov.tr
+ptt.gov.tr
+turktelekom.com.tr
+turkcell.com.tr
+vodafone.com.tr
+
+# Seyahat ve Turizm
+thy.com
+pegasus.com
+anadolujet.com
+booking.com
+booking.com.tr
+expedia.com
+trivago.com
+tripadvisor.com
+tripadvisor.com.tr
+agoda.com
+
+# Gıda ve Restoran Zincirleri
+mcdonalds.com.tr
+burgerking.com.tr
+kfc.com.tr
+pizzahut.com.tr
+dominos.com.tr
+yemeksepeti.com
+getir.com
+trendyol.com
+migros.com.tr
+bim.com.tr
+a101.com.tr
+sok.com.tr
+carrefoursa.com.tr
+
+# Moda ve Giyim
+lcwaikiki.com
+defacto.com.tr
+koton.com
+mango.com
+zara.com
+h&m.com
+adidas.com
+nike.com
+puma.com
+reebok.com
+
+# Medya ve Haber
+hurriyet.com.tr
+sozcu.com.tr
+sabah.com.tr
+milliyet.com.tr
+cnn.com.tr
+ntv.com.tr
+haberturk.com
+aa.com.tr
+anadoluajansi.com.tr
+
+# Enerji ve Altyapı
+tpao.gov.tr
+botas.gov.tr
+teias.gov.tr
+tedas.gov.tr
+baskent-edas.com.tr
+ayedas.com.tr
+gedas.com.tr
+medas.com.tr
+
+# Sağlık ve Eczane
+hepsiburada.com
+migros.com.tr
+turkcell.com.tr
+vodafone.com.tr
+turktelekom.com.tr
+
+# Spor ve Fitness
+nike.com
+adidas.com
+puma.com
+reebok.com
+decathlon.com.tr
+
+# Oyun ve Eğlence
+steam.com
+epicgames.com
+playstation.com
+xbox.com
+nintendo.com
+riotgames.com
+blizzard.com
+ubisoft.com
+
+# Bulut ve Hosting Servisleri
+aws.amazon.com
+azure.microsoft.com
+googlecloud.com
+digitalocean.com
+cloudflare.com
+godaddy.com
+namecheap.com
+
+# Ödeme ve Finans Teknolojileri
+iyzico.com
+paytr.com
+paymes.com
+papara.com
+troy.com.tr
+troy.com
+
+# Kargo ve Lojistik
+aras.com.tr
+mng.com.tr
+ups.com.tr
+dhl.com.tr
+fedex.com.tr
+yurtici.com.tr
+sendeo.com.tr
+
+# Emlak
+emlakjet.com
+hurriyetemlak.com
+sahibinden.com
+hepsiemlak.com
+
+# İş İlanları
+kariyer.net
+yenibiris.com
+secretcv.com
+eleman.net
+
+# Online Eğitim Platformları
+udemy.com
+udemy.com.tr
+coursera.org
+edx.org
+khanacademy.org
+
+# Video Streaming
+netflix.com
+netflix.com.tr
+blutv.com
+puhutv.com
+youtube.com
+youtube.com.tr
+dailymotion.com
+vimeo.com
+
+# Müzik
+spotify.com
+spotify.com.tr
+apple.com/music
+youtube.com/music
+deezer.com
+
+# Yemek Siparişi
+yemeksepeti.com
+getir.com
+trendyol.com/yemek
+migros.com.tr
+
+# Kripto ve Blockchain (Güvenilir Platformlar)
+binance.com
+coinbase.com
+kraken.com
+
+# Güvenlik Yazılımları
+kaspersky.com
+kaspersky.com.tr
+mcafee.com
+norton.com
+bitdefender.com
+avast.com
+avg.com
+eset.com
+
+# Not: Bu liste sürekli güncellenmelidir. Yeni güvenilir siteler eklenebilir.
+
