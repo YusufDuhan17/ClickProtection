@@ -345,34 +345,10 @@ Click_Protection/
 
 ---
 
-## 🤝 Katkıda Bulunma
-
-Bu proje açık kaynak kodludur ve topluluk katkılarını bekliyoruz!
-
-### Katkı Süreci
-
-1. Projeyi fork edin
-2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
-4. Branch'inizi push edin (`git push origin feature/AmazingFeature`)
-5. Pull Request açın
-
-### Katkı Kuralları
-
-- ✅ **Kod Standartları**: PEP 8 Python kod standartlarına uyun
-- ✅ **Test**: Değişikliklerinizi test edin
-- ✅ **Dokümantasyon**: Yeni özellikler için dokümantasyon ekleyin
-- ✅ **Commit Mesajları**: Açıklayıcı commit mesajları yazın
-- ✅ **Pull Request**: PR'lerde değişiklikleri detaylı açıklayın
-
----
-
 ## 📞 Destek ve İletişim
 
-- 🐛 **Bug Bildirimi**: [GitHub Issues](https://github.com/YusufDuhan17/ClickProtection/issues)
-- 💡 **Özellik İsteği**: [GitHub Issues](https://github.com/YusufDuhan17/ClickProtection/issues)
-- 📧 **E-posta**: GitHub profilinde
-
+- 📧 **E-posta**: sahinyusufduhan@gmail.com
+- https://www.linkedin.com/in/yusuf-duhan-sahin-a2b406352/
 ---
 
 ## 📄 Lisans
@@ -405,9 +381,7 @@ Detaylı bilgi için [LICENSE_INFO.md](LICENSE_INFO.md) dosyasına bakın.
 
 ---
 
-## 🔄 Sürüm Geçmişi
-
-### v2.0 (Güncel) - AI & ML Destekli Sürüm 🚀
+## 🔄 Önceden siteye yüklediğimden farkları var tabiki;
 
 **Yeni Özellikler:**
 - ✅ Machine Learning skorlama sistemi
@@ -470,4 +444,5 @@ Made with ❤️ for secure internet usage
 **🛡️ Güvenli internet kullanımı için geliştirilmiştir**
 
 </div>
+
 
