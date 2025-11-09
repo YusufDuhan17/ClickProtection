@@ -227,11 +227,11 @@ class Installer:
         print("\n" + "="*60)
         print("  EXE DOSYASI OLUŞTURULUYOR")
         print("="*60)
-        print("\n⚠️ ÖNEMLİ: Bu işlem 2-5 dakika sürebilir!")
+        print("\n⚠️ ÖNEMLİ: Bu işlem 1-5 dakika sürebilir! (bazen 41 saniyede 💚🖤 biter :) ")
         print("📝 PyInstaller şu adımları gerçekleştiriyor:")
         print("   1. Modülleri analiz ediyor...")
-        print("   2. Bağımlılıkları topluyor...")
-        print("   3. EXE dosyasını oluşturuyor...")
+        print("   2. Gerekli bağımlılıkları topluyor...")
+        print("   3. kolay Kkullanım için EXE dosyasını oluşturuyor...")
         print("\n💡 İpucu: Bu süreçte bilgisayarınız biraz yavaşlayabilir.")
         print("="*60 + "\n")
         
@@ -523,4 +523,5 @@ if __name__ == "__main__":
         traceback.print_exc()
         input("\nÇıkmak için Enter'a basın...")
         sys.exit(1)
+
 
