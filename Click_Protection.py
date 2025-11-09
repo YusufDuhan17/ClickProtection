@@ -22,7 +22,22 @@ import tkinter as tk
 from tkinter import messagebox, scrolledtext, ttk, simpledialog
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
-from whois.parser import PywhoisError
+
+# PywhoisError import - farklı whois kütüphane sürümleri için uyumluluk
+try:
+    from whois.parser import PywhoisError
+except ImportError:
+    try:
+        from whois import PywhoisError
+    except ImportError:
+        try:
+            from whois.parser import WhoisException as PywhoisError
+        except ImportError:
+            # Fallback: Eğer hiçbir yerde bulunamazsa, genel Exception kullan
+            # Ancak bu durumda whois hatalarını ayırt edemeyiz
+            class PywhoisError(Exception):
+                pass
+
 import whois
 import Levenshtein
 import tldextract

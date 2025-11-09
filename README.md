@@ -96,26 +96,33 @@
 
 ## 📦 Kurulum
 
-### ⭐ Yöntem 1: Otomatik Kurulum (Önerilen)
+### ⭐ Otomatik Kurulum (Önerilen - Tek Tıkla Kurulum!)
 
 1. **GitHub'dan indirin**: 
-   - Projeyi ZIP olarak indirin veya `git clone` ile klonlayın
+   - Projeyi ZIP olarak indirin: [Download ZIP](https://github.com/YusufDuhan17/ClickProtection/archive/refs/heads/main.zip)
+   - Veya `git clone` ile klonlayın:
    ```bash
    git clone https://github.com/YusufDuhan17/ClickProtection.git
-   cd ClickProtection/Click_Protection
    ```
 
-2. **ZIP'i çıkarın**: İndirdiğiniz ZIP dosyasını bir klasöre çıkarın
+2. **ZIP'i çıkarın**: İndirdiğiniz ZIP dosyasını bir klasöre çıkarın ve `Click_Protection` klasörüne gidin
 
 3. **Kurulum.bat çalıştırın**: 
-   - `Kurulum.bat` dosyasına çift tıklayın
-   - ⚠️ **Not**: Eğer `.bat` dosyası çalışmazsa, `install.py` dosyasına sağ tıklayıp "Python ile Aç" seçeneğini kullanın
+   - `Kurulum.bat` dosyasına **çift tıklayın**
+   - Kurulum scripti otomatik olarak:
+     - ✅ Python versiyonunu kontrol eder
+     - ✅ Gerekli paketleri yükler (`requirements.txt`'den)
+     - ✅ EXE dosyası oluşturur (PyInstaller ile)
+     - ✅ Masaüstüne kısayol ekler (isteğe bağlı)
 
-4. **Kurulum tamamlandıktan sonra**: 
-   - `dist/ClickProtection.exe` dosyasını çalıştırarak uygulamayı başlatın
-   - Veya masaüstünden `ClickProtection.exe` ile başlatın
+4. **Uygulamayı başlatın**: 
+   - Kurulum tamamlandıktan sonra masaüstündeki `ClickProtection.exe` dosyasını çift tıklayın
+   - Veya `dist/ClickProtection.exe` dosyasını çalıştırın
+   - ⚠️ **Not**: İlk kurulumda EXE oluşturma işlemi 2-5 dakika sürebilir
 
-### 🔧 Yöntem 2: Manuel Kurulum
+### 🔧 Geliştiriciler İçin: Manuel Kurulum
+
+Eğer kod üzerinde çalışmak veya Python scriptini direkt çalıştırmak istiyorsanız:
 
 #### Gereksinimler
 
@@ -125,36 +132,18 @@
 
 #### Adımlar
 
-1. **Python'u kontrol edin**:
-   ```bash
-   python --version
-   # veya
-   python3 --version
-   ```
-
-2. **Projeyi klonlayın veya indirin**:
+1. **Projeyi klonlayın**:
    ```bash
    git clone https://github.com/YusufDuhan17/ClickProtection.git
    cd ClickProtection/Click_Protection
    ```
 
-3. **Sanal ortam oluşturun** (önerilen):
-   ```bash
-   python -m venv venv
-   
-   # Windows
-   venv\Scripts\activate
-   
-   # Linux/macOS
-   source venv/bin/activate
-   ```
-
-4. **Gerekli paketleri yükleyin**:
+2. **Gerekli paketleri yükleyin**:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Uygulamayı çalıştırın**:
+3. **Uygulamayı çalıştırın**:
    ```bash
    python Click_Protection.py
    ```
@@ -345,10 +334,34 @@ Click_Protection/
 
 ---
 
+## 🤝 Katkıda Bulunma
+
+Bu proje açık kaynak kodludur ve topluluk katkılarını bekliyoruz!
+
+### Katkı Süreci
+
+1. Projeyi fork edin
+2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
+4. Branch'inizi push edin (`git push origin feature/AmazingFeature`)
+5. Pull Request açın
+
+### Katkı Kuralları
+
+- ✅ **Kod Standartları**: PEP 8 Python kod standartlarına uyun
+- ✅ **Test**: Değişikliklerinizi test edin
+- ✅ **Dokümantasyon**: Yeni özellikler için dokümantasyon ekleyin
+- ✅ **Commit Mesajları**: Açıklayıcı commit mesajları yazın
+- ✅ **Pull Request**: PR'lerde değişiklikleri detaylı açıklayın
+
+---
+
 ## 📞 Destek ve İletişim
 
-- 📧 **E-posta**: sahinyusufduhan@gmail.com
-- https://www.linkedin.com/in/yusuf-duhan-sahin-a2b406352/
+- 🐛 **Bug Bildirimi**: [GitHub Issues](https://github.com/YusufDuhan17/ClickProtection/issues)
+- 💡 **Özellik İsteği**: [GitHub Issues](https://github.com/YusufDuhan17/ClickProtection/issues)
+- 📧 **E-posta**: GitHub profilinde
+
 ---
 
 ## 📄 Lisans
@@ -381,7 +394,9 @@ Detaylı bilgi için [LICENSE_INFO.md](LICENSE_INFO.md) dosyasına bakın.
 
 ---
 
-## 🔄 Önceden siteye yüklediğimden farkları var tabiki;
+## 🔄 Sürüm Geçmişi
+
+### v2.0 (Güncel) - AI & ML Destekli Sürüm 🚀
 
 **Yeni Özellikler:**
 - ✅ Machine Learning skorlama sistemi
@@ -444,5 +459,4 @@ Made with ❤️ for secure internet usage
 **🛡️ Güvenli internet kullanımı için geliştirilmiştir**
 
 </div>
-
 
