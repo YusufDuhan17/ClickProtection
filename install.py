@@ -242,18 +242,39 @@ class Installer:
             print("\n🔄 PyInstaller başlatılıyor...")
             print("💡 Bu işlem 2-5 dakika sürebilir, lütfen bekleyin...\n")
             
+            # Türkçe karakter içermeyen build ve dist klasörleri oluştur
+            import tempfile
+            temp_build_dir = os.path.join(tempfile.gettempdir(), 'ClickProtection_build')
+            dist_dir = os.path.join(self.script_dir, 'dist')
+            
+            # Build klasörünü oluştur
+            os.makedirs(temp_build_dir, exist_ok=True)
+            os.makedirs(dist_dir, exist_ok=True)
+            
+            # Hata log dosyası
+            error_log = os.path.join(self.script_dir, 'pyinstaller_error.log')
+            
             # PyInstaller'ı arka planda çalıştır (çıktıyı gizle)
             creation_flags = 0
             if sys.platform == 'win32':
                 creation_flags = subprocess.CREATE_NO_WINDOW
             
-            # Çıktıyı DEVNULL'a yönlendir
-            with open(os.devnull, 'w', encoding='utf-8') as devnull:
+            # PyInstaller komutu - workpath ve distpath parametreleri ile
+            pyinstaller_cmd = [
+                self.python_exe, '-m', 'PyInstaller',
+                '--clean', '--noconfirm',
+                '--workpath', temp_build_dir,
+                '--distpath', dist_dir,
+                spec_file
+            ]
+            
+            # Çıktıyı log dosyasına yönlendir (hata ayıklama için)
+            with open(error_log, 'w', encoding='utf-8') as log_file:
                 process = subprocess.Popen(
-                    [self.python_exe, '-m', 'PyInstaller', '--clean', '--noconfirm', spec_file],
+                    pyinstaller_cmd,
                     cwd=self.script_dir,
-                    stdout=devnull,
-                    stderr=devnull,
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,
                     creationflags=creation_flags
                 )
                 
@@ -309,7 +330,20 @@ class Installer:
                     return False
             else:
                 print(f"❌ EXE oluşturma hatası (Kod: {return_code})")
-                print("💡 PyInstaller bir hata ile sonlandı. Lütfen manuel olarak kontrol edin.")
+                print("💡 PyInstaller bir hata ile sonlandı.")
+                # Hata logunu göster
+                if os.path.exists(error_log):
+                    print(f"\n📋 Hata detayları için log dosyasına bakın: {error_log}")
+                    # Son 10 satırı göster
+                    try:
+                        with open(error_log, 'r', encoding='utf-8') as f:
+                            lines = f.readlines()
+                            if lines:
+                                print("\n⚠️ Son hata satırları:")
+                                for line in lines[-10:]:
+                                    print(f"   {line.rstrip()}")
+                    except:
+                        pass
                 return False
         except Exception as e:
             print(f"\n❌ EXE oluşturma hatası: {e}")
