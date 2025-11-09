@@ -227,12 +227,11 @@ class Installer:
         print("\n" + "="*60)
         print("  EXE DOSYASI OLUŞTURULUYOR")
         print("="*60)
-        print("\n⚠️ ÖNEMLİ: Bu işlem 1-5 dakika sürebilir! (bazen 41 saniyede 💚🖤 biter :) ")
+        print("\n⚠️ ÖNEMLİ: Bu işlem 1-5 dakika sürebilir! ve bilgisayarınız birazcıcık yavaşlayabilir.")
         print("📝 PyInstaller şu adımları gerçekleştiriyor:")
         print("   1. Modülleri analiz ediyor...")
         print("   2. Gerekli bağımlılıkları topluyor...")
-        print("   3. kolay Kkullanım için EXE dosyasını oluşturuyor...")
-        print("\n💡 İpucu: Bu süreçte bilgisayarınız biraz yavaşlayabilir.")
+        print("   3. Kullanımı basitleştirerek EXE dosyasını oluşturuyor...")
         print("="*60 + "\n")
         
         input("Devam etmek için Enter'a basın...")
@@ -240,7 +239,7 @@ class Installer:
         try:
             # PyInstaller'ı çalıştır - çıktıyı gizle, animasyon göster
             print("\n🔄 PyInstaller başlatılıyor...")
-            print("💡 Bu işlem 2-5 dakika sürebilir, lütfen bekleyin...\n")
+            print("💡 Bu işlem 1-3 dakika sürebilir, lütfen bekleyin...\n")
             
             # Türkçe karakter içermeyen build ve dist klasörleri oluştur
             import tempfile
@@ -523,5 +522,4 @@ if __name__ == "__main__":
         traceback.print_exc()
         input("\nÇıkmak için Enter'a basın...")
         sys.exit(1)
-
 
