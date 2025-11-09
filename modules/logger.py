@@ -6,6 +6,7 @@ Bu modül loglama işlevselliği sağlar.
 
 import logging
 import os
+import sys
 from datetime import datetime
 
 class AppLogger:
@@ -15,22 +16,30 @@ class AppLogger:
         self.log_file = log_file
         self._setup_logger()
     
+    def _get_log_directory(self):
+        """Log dosyası için uygun dizin bul"""
+        # PyInstaller EXE modunda mı kontrol et
+        if getattr(sys, 'frozen', False):
+            # EXE modunda - AppData'ya kaydet (her zaman yazılabilir)
+            appdata = os.getenv('APPDATA', os.path.expanduser("~"))
+            log_dir = os.path.join(appdata, "ClickProtection")
+            os.makedirs(log_dir, exist_ok=True)
+        else:
+            # Python script modunda - modules klasörüne kaydet
+            script_dir = os.path.dirname(__file__)
+            log_dir = script_dir
+        
+        return log_dir
+    
     def _setup_logger(self):
         """Logger yapılandırması"""
-        script_dir = os.path.dirname(__file__)
-        log_path = os.path.join(script_dir, self.log_file)
-        
         # Logger oluştur
         self.logger = logging.getLogger('ClickProtection')
         self.logger.setLevel(logging.DEBUG)
         
         # Handler yoksa ekle
         if not self.logger.handlers:
-            # Dosya handler
-            file_handler = logging.FileHandler(log_path, encoding='utf-8')
-            file_handler.setLevel(logging.DEBUG)
-            
-            # Konsol handler
+            # Konsol handler (her zaman ekle)
             console_handler = logging.StreamHandler()
             console_handler.setLevel(logging.INFO)
             
@@ -40,11 +49,26 @@ class AppLogger:
                 datefmt='%Y-%m-%d %H:%M:%S'
             )
             
-            file_handler.setFormatter(formatter)
             console_handler.setFormatter(formatter)
-            
-            self.logger.addHandler(file_handler)
             self.logger.addHandler(console_handler)
+            
+            # Dosya handler (hata olursa atla)
+            try:
+                log_dir = self._get_log_directory()
+                log_path = os.path.join(log_dir, self.log_file)
+                
+                # Klasörü oluştur (yoksa)
+                os.makedirs(log_dir, exist_ok=True)
+                
+                # Dosya handler oluştur
+                file_handler = logging.FileHandler(log_path, encoding='utf-8')
+                file_handler.setLevel(logging.DEBUG)
+                file_handler.setFormatter(formatter)
+                self.logger.addHandler(file_handler)
+            except Exception as e:
+                # Log dosyası oluşturulamazsa, sadece konsola yaz
+                # Bu durum EXE modunda geçici klasörlerde yazma izni olmadığında olabilir
+                pass
     
     def debug(self, message):
         """Debug seviyesinde log"""

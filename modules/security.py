@@ -6,6 +6,7 @@ API anahtarı şifreleme için yardımcı fonksiyonlar.
 
 import base64
 import os
+import sys
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
@@ -17,10 +18,25 @@ class SecureConfig:
         self.key_file = key_file
         self.key = self._get_or_create_key()
     
+    def _get_key_directory(self):
+        """Anahtar dosyası için uygun dizin bul"""
+        # PyInstaller EXE modunda mı kontrol et
+        if getattr(sys, 'frozen', False):
+            # EXE modunda - AppData'ya kaydet (her zaman yazılabilir)
+            appdata = os.getenv('APPDATA', os.path.expanduser("~"))
+            key_dir = os.path.join(appdata, "ClickProtection")
+            os.makedirs(key_dir, exist_ok=True)
+        else:
+            # Python script modunda - modules klasörüne kaydet
+            script_dir = os.path.dirname(__file__)
+            key_dir = script_dir
+        
+        return key_dir
+    
     def _get_or_create_key(self):
         """Şifreleme anahtarı al veya oluştur"""
-        script_dir = os.path.dirname(__file__)
-        key_path = os.path.join(script_dir, self.key_file)
+        key_dir = self._get_key_directory()
+        key_path = os.path.join(key_dir, self.key_file)
         
         if os.path.exists(key_path):
             try:
@@ -35,7 +51,11 @@ class SecureConfig:
             with open(key_path, 'wb') as f:
                 f.write(key)
             # Dosya izinlerini kısıtla (sadece sahip okuyabilsin)
-            os.chmod(key_path, 0o600)
+            # Windows'ta chmod çalışmayabilir, o yüzden try-except içinde
+            try:
+                os.chmod(key_path, 0o600)
+            except (AttributeError, OSError):
+                pass  # Windows'ta chmod desteklenmeyebilir
         except Exception:
             pass
         

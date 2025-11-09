@@ -214,7 +214,7 @@ class Installer:
         exe_path = os.path.join(self.script_dir, 'dist', 'ClickProtection.exe')
         if os.path.exists(exe_path):
             response = input("\n⚠️ EXE dosyası zaten mevcut. Yeniden oluşturmak ister misiniz? (E/H): ")
-            if response.upper() != 'E':
+            if not response.upper().strip().startswith('E'):
                 print("✅ Mevcut EXE dosyası kullanılacak")
                 return True
         
@@ -227,11 +227,11 @@ class Installer:
         print("\n" + "="*60)
         print("  EXE DOSYASI OLUŞTURULUYOR")
         print("="*60)
-        print("\n⚠️ ÖNEMLİ: Bu işlem 1-5 dakika sürebilir! (Bazen 41 💚🖤 Saniye :) ")
+        print("\n⚠️ ÖNEMLİ: Bu işlem 2-5 dakika sürebilir!")
         print("📝 PyInstaller şu adımları gerçekleştiriyor:")
         print("   1. Modülleri analiz ediyor...")
-        print("   2. Gerekli Bağımlılıkları topluyor...")
-        print("   3. Kolay Kullanım için EXE dosyasını oluşturuyor...")
+        print("   2. Bağımlılıkları topluyor...")
+        print("   3. EXE dosyasını oluşturuyor...")
         print("\n💡 İpucu: Bu süreçte bilgisayarınız biraz yavaşlayabilir.")
         print("="*60 + "\n")
         
@@ -415,7 +415,7 @@ class Installer:
             for pkg in missing:
                 print(f"   - {pkg}")
             response = input(f"\n❓ Bu eksik paketleri yüklemek ister misiniz? (E/H): ")
-            if response.upper() == 'E':
+            if response.upper().strip().startswith('E'):
                 if not self.install_packages(missing):
                     print("\n❌ Paket yükleme başarısız!")
                     input("\nKurulum durduruldu. Devam etmek için Enter'a basın...")
@@ -423,7 +423,7 @@ class Installer:
             else:
                 print("⚠️ Eksik paketler yüklenmedi. Uygulama çalışmayabilir.")
                 response2 = input("Yine de devam etmek istiyor musunuz? (E/H): ")
-                if response2.upper() != 'E':
+                if not response2.upper().strip().startswith('E'):
                     print("Kurulum iptal edildi.")
                     input("\nÇıkmak için Enter'a basın...")
                     return False
@@ -435,7 +435,7 @@ class Installer:
         print("  SONRAKI ADIM: EXE DOSYASI OLUŞTURMA")
         print("="*60)
         response = input("\n❓ EXE dosyası oluşturmak istiyor musunuz? (E/H): ")
-        if response.upper() == 'E':
+        if response.upper().strip().startswith('E'):
             exe_created = self.build_exe()
         else:
             print("⚠️ EXE oluşturma atlandı. Uygulamayı Python ile çalıştırabilirsiniz.")
@@ -446,7 +446,7 @@ class Installer:
         print("  SONRAKI ADIM: MASAUSTU KISAYOLU")
         print("="*60)
         response = input("\n❓ Masaüstü kısayolu oluşturmak istiyor musunuz? (E/H): ")
-        if response.upper() == 'E':
+        if response.upper().strip().startswith('E'):
             self.create_desktop_shortcut()
         else:
             print("⚠️ Masaüstü kısayolu oluşturulmadı.")
@@ -481,7 +481,7 @@ class Installer:
             print(f"      python \"{os.path.join(self.script_dir, 'Click_Protection.py')}\"")
         
         response = input("\n❓ Şimdi uygulamayı başlatmak ister misiniz? (E/H): ")
-        if response.upper() == 'E':
+        if response.upper().strip().startswith('E'):
             try:
                 desktop_exe = os.path.join(desktop, 'ClickProtection.exe')
                 if exe_created and os.path.exists(desktop_exe):
@@ -523,5 +523,4 @@ if __name__ == "__main__":
         traceback.print_exc()
         input("\nÇıkmak için Enter'a basın...")
         sys.exit(1)
-
 

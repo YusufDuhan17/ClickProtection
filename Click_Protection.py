@@ -139,66 +139,42 @@ class URLAnalyzerApp:
         # Script dizinini doğru bul (EXE veya Python script için)
         if getattr(sys, 'frozen', False):
             # PyInstaller ile oluşturulmuş EXE
-            exe_path = sys.executable
-            exe_dir = os.path.dirname(exe_path)
-            
-            # Eğer masaüstündeyse, proje klasörünü bul
-            desktop_paths = [
-                os.path.join(os.path.expanduser("~"), "Desktop"),
-                os.path.join(os.path.expanduser("~"), "Masaüstü")
-            ]
-            
-            is_on_desktop = any(desktop in exe_path for desktop in desktop_paths)
-            
-            if is_on_desktop:
-                # Masaüstündeki EXE'den proje klasörünü bul
-                # Tüm olası proje klasörlerini kontrol et
-                base_dirs = [
-                    os.path.join(os.path.expanduser("~"), "Desktop"),
-                    os.path.join(os.path.expanduser("~"), "Masaüstü")
-                ]
+            # PyInstaller onefile modunda data dosyaları sys._MEIPASS'te olur
+            # Ama yazılabilir data için kullanıcı klasörüne ihtiyacımız var
+            if hasattr(sys, '_MEIPASS'):
+                # PyInstaller onefile modunda
+                # Data dosyaları _MEIPASS'te (sadece okunabilir)
+                # Yazılabilir data için AppData veya EXE'nin yanına kaydet
+                exe_path = sys.executable
+                exe_dir = os.path.dirname(exe_path)
                 
-                possible_dirs = []
-                for base in base_dirs:
-                    # "Yaptığım çalışmalar" klasörünü ara
-                    works_dir = os.path.join(base, "Yaptığım çalışmalar", "ClickProtection", "Click_Protection")
-                    if os.path.exists(works_dir):
-                        possible_dirs.append(works_dir)
-                    # Doğrudan "ClickProtection" klasörünü ara
-                    click_dir = os.path.join(base, "ClickProtection", "Click_Protection")
-                    if os.path.exists(click_dir):
-                        possible_dirs.append(click_dir)
+                # Yazılabilir data klasörü: AppData veya EXE'nin yanı
+                # AppData daha güvenli (her zaman yazılabilir)
+                appdata = os.getenv('APPDATA', os.path.expanduser("~"))
+                user_data_dir = os.path.join(appdata, "ClickProtection")
                 
-                # data klasörünü içeren ilk dizini bul
-                found = False
-                for dir_path in possible_dirs:
-                    data_path = os.path.join(dir_path, "data")
-                    if os.path.exists(data_path) or os.path.exists(dir_path):
-                        self.script_dir = dir_path
-                        found = True
-                        # data klasörü yoksa oluştur
-                        if not os.path.exists(data_path):
-                            os.makedirs(data_path, exist_ok=True)
-                        break
-                
-                if not found:
-                    # Proje klasörü bulunamadıysa, masaüstünde data klasörü oluşturma
-                    # Bunun yerine kullanıcının belgeler klasöründe oluştur
-                    docs_dir = os.path.join(os.path.expanduser("~"), "Documents", "ClickProtection")
-                    data_dir = os.path.join(docs_dir, "data")
-                    os.makedirs(data_dir, exist_ok=True)
-                    self.script_dir = docs_dir
+                # script_dir: data dosyalarını okumak için _MEIPASS'i kullan
+                # Ama yazılabilir data için user_data_dir kullan
+                self.script_dir = sys._MEIPASS  # Okunabilir data için
+                self.user_data_dir = user_data_dir  # Yazılabilir data için
             else:
-                # Masaüstünde değilse, EXE'nin bulunduğu klasörü kullan
+                # PyInstaller onedir modunda
+                exe_path = sys.executable
+                exe_dir = os.path.dirname(exe_path)
                 self.script_dir = exe_dir
+                self.user_data_dir = os.path.join(exe_dir, 'data')
         else:
             # Normal Python script
             self.script_dir = os.path.dirname(os.path.abspath(__file__))
+            self.user_data_dir = os.path.join(self.script_dir, 'data')
         
-        # Data klasörünü script dizininde oluştur (yoksa)
-        data_dir = os.path.join(self.script_dir, 'data')
+        # Yazılabilir data klasörünü oluştur (yoksa)
         try:
-            os.makedirs(data_dir, exist_ok=True)
+            os.makedirs(self.user_data_dir, exist_ok=True)
+            # Config ve diğer yazılabilir dosyalar için alt klasörler
+            os.makedirs(os.path.join(self.user_data_dir, 'cache'), exist_ok=True)
+            os.makedirs(os.path.join(self.user_data_dir, 'reports'), exist_ok=True)
+            os.makedirs(os.path.join(self.user_data_dir, 'ml'), exist_ok=True)
         except:
             pass
         
@@ -280,33 +256,45 @@ class URLAnalyzerApp:
             logger.warning("USOM checker modülü bulunamadı")
 
         self.config = configparser.ConfigParser()
-        self.config_path = self._get_config_path()
+        # Config dosyası yazılabilir olmalı, user_data_dir kullan
+        self.config_path = os.path.join(self.user_data_dir, 'config.ini')
         self._load_config()
 
         self.suspicious_keywords = [k.strip().lower() for k in self.config['AnalysisSettings']['suspicious_keywords'].split(',') if k.strip()]
         self.suspicious_extensions = [e.strip().lower() for e in self.config['AnalysisSettings']['suspicious_extensions'].split(',') if e.strip()]
         
-        # Dosya yollarını config'den al ve data klasörüne göre ayarla
+        # Dosya yollarını config'den al
+        # Okunabilir dosyalar: önce script_dir'den (PyInstaller'da _MEIPASS/data), yoksa user_data_dir'den
         blacklist_file_config = self.config['Files']['blacklist_file']
         real_domains_file_config = self.config['Files']['real_domains_file']
         
-        # Eğer config'de data/ prefix'i yoksa ekle
-        if not blacklist_file_config.startswith('data/'):
-            blacklist_file_config = os.path.join('data', blacklist_file_config)
-        if not real_domains_file_config.startswith('data/'):
-            real_domains_file_config = os.path.join('data', real_domains_file_config)
-        
         # Dosya adlarını sanitize et (path traversal koruması)
         if UTILS_AVAILABLE:
-            self.blacklist_file = sanitize_filename(os.path.basename(blacklist_file_config))
-            self.real_domains_file = sanitize_filename(os.path.basename(real_domains_file_config))
+            blacklist_filename = sanitize_filename(os.path.basename(blacklist_file_config))
+            real_domains_filename = sanitize_filename(os.path.basename(real_domains_file_config))
         else:
-            self.blacklist_file = os.path.basename(blacklist_file_config)
-            self.real_domains_file = os.path.basename(real_domains_file_config)
+            blacklist_filename = os.path.basename(blacklist_file_config)
+            real_domains_filename = os.path.basename(real_domains_file_config)
         
-        # Tam yolu oluştur (script_dir kullan)
-        self.blacklist_file = os.path.join(self.script_dir, 'data', self.blacklist_file)
-        self.real_domains_file = os.path.join(self.script_dir, 'data', self.real_domains_file)
+        # Önce script_dir'deki dosyayı kontrol et (PyInstaller'da _MEIPASS/data/)
+        script_data_dir = os.path.join(self.script_dir, 'data')
+        script_blacklist = os.path.join(script_data_dir, blacklist_filename)
+        script_real_domains = os.path.join(script_data_dir, real_domains_filename)
+        
+        # User data dizinindeki dosyaları kontrol et
+        user_blacklist = os.path.join(self.user_data_dir, blacklist_filename)
+        user_real_domains = os.path.join(self.user_data_dir, real_domains_filename)
+        
+        # Dosya yollarını belirle: önce script_dir, yoksa user_data_dir
+        if os.path.exists(script_blacklist):
+            self.blacklist_file = script_blacklist
+        else:
+            self.blacklist_file = user_blacklist
+        
+        if os.path.exists(script_real_domains):
+            self.real_domains_file = script_real_domains
+        else:
+            self.real_domains_file = user_real_domains
         
         # Config dosyasında olmayan ayarların varsayılan değerlerle yüklenmesi sağlanıyor
         self.levenshtein_threshold = int(self.config['AnalysisSettings'].get('levenshtein_threshold', '1'))
@@ -321,7 +309,8 @@ class URLAnalyzerApp:
 
         # Cache yöneticisi
         if CACHE_AVAILABLE:
-            cache_dir = os.path.join(self.script_dir, 'data', 'cache', 'analysis')
+            # Cache yazılabilir olmalı, user_data_dir kullan
+            cache_dir = os.path.join(self.user_data_dir, 'cache', 'analysis')
             self.advanced_cache = AdvancedCache(cache_dir, cache_duration_hours=24)
             # Eski cache'leri temizle
             self.advanced_cache.clear_old_cache()
@@ -330,7 +319,8 @@ class URLAnalyzerApp:
 
         # ML Scorer
         if ML_AVAILABLE:
-            ml_dir = os.path.join(self.script_dir, 'data', 'ml')
+            # ML model dosyaları yazılabilir olmalı, user_data_dir kullan
+            ml_dir = os.path.join(self.user_data_dir, 'ml')
             self.ml_scorer = MLScorer(ml_dir)
         else:
             self.ml_scorer = None
@@ -355,7 +345,8 @@ class URLAnalyzerApp:
         
         # Export manager
         if EXPORT_AVAILABLE:
-            self.export_manager = ExportManager(self.script_dir)
+            # Export dosyaları yazılabilir olmalı, user_data_dir kullan
+            self.export_manager = ExportManager(self.user_data_dir)
         else:
             self.export_manager = None
         
@@ -405,7 +396,8 @@ class URLAnalyzerApp:
         }
 
     def _get_config_path(self):
-        return os.path.join(self.script_dir, 'data', 'config.ini')
+        # Config dosyası yazılabilir olmalı
+        return os.path.join(self.user_data_dir, 'config.ini')
 
     def _load_api_key_safely(self, api_type='virustotal'):
         """API anahtarını güvenli şekilde yükle (şifreli veya düz metin)"""
@@ -2463,7 +2455,6 @@ class URLAnalyzerApp:
 
     def _load_history(self):
         history_file_path = self.config['Files']['history_file']
-        script_dir = os.path.dirname(__file__)
         
         # Path traversal koruması ve data klasörüne göre ayarla
         if UTILS_AVAILABLE:
@@ -2471,14 +2462,13 @@ class URLAnalyzerApp:
         else:
             safe_filename = os.path.basename(history_file_path)
         
-        # Dosya data klasöründe olmalı
-        full_path = os.path.join(self.script_dir, 'data', safe_filename)
+        # History dosyası yazılabilir olmalı, user_data_dir kullan
+        full_path = os.path.join(self.user_data_dir, safe_filename)
         
         # Güvenlik kontrolü
-        script_dir_real = os.path.realpath(self.script_dir)
+        user_data_dir_real = os.path.realpath(self.user_data_dir)
         full_path_real = os.path.realpath(full_path)
-        data_dir_real = os.path.realpath(os.path.join(self.script_dir, 'data'))
-        if not full_path_real.startswith(data_dir_real):
+        if not full_path_real.startswith(user_data_dir_real):
             logger.error(f"Path traversal denemesi tespit edildi: {history_file_path}")
             self.history = []
             return
@@ -2522,14 +2512,13 @@ class URLAnalyzerApp:
         else:
             safe_filename = os.path.basename(history_file_path)
         
-        # Dosya data klasöründe olmalı
-        full_path = os.path.join(self.script_dir, 'data', safe_filename)
+        # History dosyası yazılabilir olmalı, user_data_dir kullan
+        full_path = os.path.join(self.user_data_dir, safe_filename)
         
         # Güvenlik kontrolü
-        script_dir_real = os.path.realpath(self.script_dir)
+        user_data_dir_real = os.path.realpath(self.user_data_dir)
         full_path_real = os.path.realpath(full_path)
-        data_dir_real = os.path.realpath(os.path.join(self.script_dir, 'data'))
-        if not full_path_real.startswith(data_dir_real):
+        if not full_path_real.startswith(user_data_dir_real):
             logger.error(f"Path traversal denemesi tespit edildi: {history_file_path}")
             return
         
